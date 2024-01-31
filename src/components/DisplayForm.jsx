@@ -1,64 +1,81 @@
-import React, { useState } from 'react'
-import  { v4 } from 'uuid';
-import AddTodo from './AddTodo';
-
-import Timer from './Timer';
+import React, { useState } from 'react';
+import { v4 as uuid } from 'uuid'; // Importing uuid function from uuid package
+import AddTodo from './AddTodo'; // Importing AddTodo component
+import Timer from './Timer'; // Importing Timer component
 
 function DisplayForm() {
-  const [submitText, setSubmitText] =useState(false)
-  const[choose, setChoose] = useState(false)
-  const [todos, setTodos] = useState([
+  // State variables for managing form state
+  const [submitText, setSubmitText] = useState(false); // State to track if text is submitted
+  const [choose, setChoose] = useState(false); // State to track if user chooses to add new todo
+  const [todos, setTodos] = useState([ // State to manage todo list
     {
-    id: v4(),
-     title:'title',
-     project:'project',
-     edit:true
+      id: uuid(), // Generate unique id for todo item
+      title: 'title',
+      project: 'project',
+      edit: true // Initial edit state set to true
+    },
+  ]);
 
-  },
-])
+  // Function to delete a todo item
+  const deleteTodo = (id) => {
+    const newArr = todos.filter(todo => todo.id !== id); // Filter out todo with given id
+    setTodos(newArr); // Update todo list
+  }
 
-const deleteTodo = (id) =>{
-  const newArr = [...todos].filter(item =>item.id !==id)
-  setTodos(newArr)
-}
-
-const updateTodo =(id) =>{
-  const updatedItem = [...todos];
-  updatedItem.forEach(item =>{
-    if(item.id === id){
-      item.edit= false
-    }
-  });
-  setTodos(updatedItem);
-  setSubmitText(true)
-  
-}
+  // Function to update edit state of a todo item
+  const updateTodo = (id) => {
+    const updatedTodos = todos.map(todo => ({ // Map over todos array
+      ...todo, // Keep existing todo properties
+      edit: todo.id === id ? false : todo.edit // Update edit property if id matches
+    }));
+    setTodos(updatedTodos); // Update todo list
+    setSubmitText(true); // Set submitText state to true
+  }
 
   return (
     <div>
-      {
-        todos.map((param) =>(
-     
-          <div key={param.id}>
-             {param.edit? (
-             <div className='card col-3 mx-auto bg-dark'>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+          {todo.edit ? (
+            // Display todo item with edit mode
+            <div className='card col-3 mx-auto bg-dark'>
               <div className='card-body'>
-               <div className='row text-light'>
-               <label className='text-start'>{param.title}</label>
-                <label className='text-start'>{param.project}</label>
-                <Timer deleteTodo={() => deleteTodo(param.id)} updateTodo ={() => updateTodo(param.id)}  />
-               </div>
-                
+                <div className='row text-light'>
+                  <label className='text-start'>{todo.title}</label>
+                  <label className='text-start'>{todo.project}</label>
+                  {/* Pass deleteTodo and updateTodo functions to Timer component */}
+                  <Timer deleteTodo={() => deleteTodo(todo.id)} updateTodo={() => updateTodo(todo.id)} />
+                </div>
               </div>
-            </div>) :(<AddTodo submitText= {submitText} setSubmitText={setSubmitText} todo={param} title={param.title} project={param.project}  setTodos={setTodos}  todos={todos} />)}
-          </div>
-        ))
-      }
-      {
-        choose ?(<AddTodo  setChoose={setChoose} setTodos={setTodos} todos={todos} choose={choose} />):(<p className='btn' onClick={() =>setChoose(!choose)}>+</p>)
-      }
-    </div> 
-  )
+            </div>
+          ) : (
+            // Display AddTodo component for editing todo item
+            <AddTodo
+              key={todo.id} // Use todo id as key for AddTodo component
+              submitText={submitText}
+              setSubmitText={setSubmitText}
+              todo={todo}
+              setTodos={setTodos}
+              todos={todos}
+            />
+          )}
+        </div>
+      ))}
+      {/* Conditional rendering for adding new todo */}
+      {choose ? (
+        // Display AddTodo component if choose state is true
+        <AddTodo
+          setChoose={setChoose}
+          setTodos={setTodos}
+          todos={todos}
+          choose={choose}
+        />
+      ) : (
+        // Display '+' button if choose state is false
+        <p className='btn' onClick={() => setChoose(!choose)}>+</p>
+      )}
+    </div>
+  );
 }
 
-export default DisplayForm
+export default DisplayForm;

@@ -1,50 +1,63 @@
-import { useEffect, useState } from "react"
-import { BsFillPencilFill } from "react-icons/bs";
-import { BsFillTrashFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs"; // Importing pencil and trash icons
 
-const Timer = (props) =>{
-    const [sec, setSec] =  useState(0)
-    const [min, setMin] =  useState(0)
-    const [hr, setHr] =  useState(0)
-    const [start, setStart] =  useState(false)
-    useEffect(() =>{
+const Timer = ({ updateTodo, deleteTodo }) => { // Destructuring props directly in the function parameters
+    // State variables for seconds, minutes, hours, and timer start
+    const [seconds, setSeconds] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [hours, setHours] = useState(0);
+    const [start, setStart] = useState(false);
+
+    // Effect to update timer
+    useEffect(() => {
         let timer;
-        if(start){
+        if (start) {
             timer = setInterval(() => {
-                setSec(sec + 1);
-
-                if(sec === 59){
-                    setMin(min + 1);
-                    setSec(0)
-                }
-                if(min === 59){
-                    setHr(hr + 1);
-                    setMin(0)
-                }    
+                // Update seconds
+                setSeconds(sec => {
+                    if (sec === 59) {
+                        // If seconds reach 59, reset to 0 and increment minutes
+                        setMinutes(min => {
+                            if (min === 59) {
+                                // If minutes reach 59, reset to 0 and increment hours
+                                setHours(hr => hr + 1);
+                                return 0;
+                            }
+                            return min + 1;
+                        });
+                        return 0;
+                    }
+                    return sec + 1;
+                });
             }, 1000);
-        }else{
-            clearInterval(timer)
+        } else {
+            clearInterval(timer);
         }
-        return () =>clearInterval(timer)
-    })
+        return () => clearInterval(timer); // Cleanup function to clear interval
+    }, [start]); // Dependency array to ensure effect runs when 'start' changes
 
-    const restart = () =>{
-        setStart(!start)
-    }
+    // Function to toggle timer start/stop
+    const restart = () => {
+        setStart(prevStart => !prevStart); // Toggle 'start' state
+    };
+
     return (
         <div>
             <div className="d-flex justify-content-between">
-                <h3 className="mx-auto">{hr<10? "0" +hr:hr}:{min<10? "0" +min:min}:{sec<10? "0" +sec:sec}</h3>
+                {/* Displaying the timer */}
+                <h3 className="mx-auto">{hours < 10 ? "0" + hours : hours}:{minutes < 10 ? "0" + minutes : minutes}:{seconds < 10 ? "0" + seconds : seconds}</h3>
                 <div className="text-light">
-                <BsFillPencilFill onClick={props.updateTodo} />
-                <BsFillTrashFill onClick={props.deleteTodo}/>
-                
+                    {/* Buttons for editing and deleting todo */}
+                    <BsFillPencilFill onClick={updateTodo} />
+                    <BsFillTrashFill onClick={deleteTodo} />
                 </div>
             </div>
-            {!start? ( <button className="restart btn btn-success " onClick={restart}>Start</button>):( <button className="restart btn btn-primary" onClick={restart}>Stop</button>)}
-           
+            {/* Button to start/stop the timer */}
+            <button className={`restart btn ${start ? "btn-primary" : "btn-success"}`} onClick={restart}>
+                {start ? "Stop" : "Start"}
+            </button>
         </div>
-    )
+    );
 }
 
-export default Timer
+export default Timer;
