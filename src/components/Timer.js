@@ -42,21 +42,22 @@ const Timer = ({ updateTodo, deleteTodo }) => { // Destructuring props directly 
     };
 
     return (
-        <div>
+        <section className="mt-5">
             <div className="d-flex justify-content-between">
                 {/* Displaying the timer */}
                 <h3 className="mx-auto">{hours < 10 ? "0" + hours : hours}:{minutes < 10 ? "0" + minutes : minutes}:{seconds < 10 ? "0" + seconds : seconds}</h3>
-                <div className="text-light">
-                    {/* Buttons for editing and deleting todo */}
-                    <BsFillPencilFill onClick={updateTodo} />
-                    <BsFillTrashFill onClick={deleteTodo} />
-                </div>
+            </div>
+            <div className="text-light row mx-auto">
+                {/* Buttons for editing and deleting todo */}
+                <span className="text-end"><BsFillPencilFill onClick={updateTodo} /></span> 
+                <span className="text-end"><BsFillTrashFill onClick={deleteTodo} /></span>
+                
             </div>
             {/* Button to start/stop the timer */}
             <button className={`restart btn ${start ? "btn-primary" : "btn-success"}`} onClick={restart}>
                 {start ? "Stop" : "Start"}
             </button>
-        </div>
+        </section>
     );
 }
 

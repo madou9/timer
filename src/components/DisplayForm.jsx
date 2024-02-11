@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid'; // Importing uuid function from uuid package
 import AddTodo from './AddTodo'; // Importing AddTodo component
 import Timer from './Timer'; // Importing Timer component
+import { Button } from 'react-bootstrap';
 
 function DisplayForm() {
   // State variables for managing form state
@@ -33,7 +34,7 @@ function DisplayForm() {
   }
 
   return (
-    <div>
+    <>
       {todos.map((todo) => (
         <div key={todo.id}>
           {todo.edit ? (
@@ -45,6 +46,7 @@ function DisplayForm() {
                   <label className='text-start'>{todo.project}</label>
                   {/* Pass deleteTodo and updateTodo functions to Timer component */}
                   <Timer deleteTodo={() => deleteTodo(todo.id)} updateTodo={() => updateTodo(todo.id)} />
+
                 </div>
               </div>
             </div>
@@ -72,9 +74,9 @@ function DisplayForm() {
         />
       ) : (
         // Display '+' button if choose state is false
-        <p className='btn' onClick={() => setChoose(!choose)}>+</p>
+        <Button className='btn text-white mt-3 text-danger' onClick={() => setChoose(!choose)}>Add New Timer</Button>
       )}
-    </div>
+    </>
   );
 }
 

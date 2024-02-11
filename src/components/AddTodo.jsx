@@ -7,7 +7,7 @@ function AddTodo(props) {
     const [project, setProject] = useState(props.project ? props.project : ""); // State for todo project
 
     // Determine button text based on submitText prop
-    Button = props.submitText ? "Modifier" : "Créer";
+    Button = props.submitText ? "Edit" : "Create";
 
     // Function to add new todo
     const addNewTodo = () => {
@@ -53,7 +53,7 @@ function AddTodo(props) {
                 <input
                     className='form-control'
                     type="text"
-                    placeholder="Mon projet"
+                    placeholder="Add Title of your Project"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
@@ -62,7 +62,7 @@ function AddTodo(props) {
                 <input
                     className='form-control'
                     type="text"
-                    placeholder="Mon projet"
+                    placeholder="Add Name of your Project"
                     value={project}
                     onChange={(e) => setProject(e.target.value)}
                 />
