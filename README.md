@@ -1,6 +1,6 @@
 # Project Title
 
-Brief description of your project.
+CountDown Timer Project.
 
 ## Table of Contents
 
