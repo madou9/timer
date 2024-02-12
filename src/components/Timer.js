@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs"; // Importing pencil and trash icons
+import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 
-const Timer = ({ updateTodo, deleteTodo }) => { // Destructuring props directly in the function parameters
-    // State variables for seconds, minutes, hours, and timer start
+const Timer = ({ updateTodo, deleteTodo }) => {
+    // State variables for hours, minutes, seconds, and timer start
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [hours, setHours] = useState(0);
@@ -37,24 +37,23 @@ const Timer = ({ updateTodo, deleteTodo }) => { // Destructuring props directly 
     }, [start]); // Dependency array to ensure effect runs when 'start' changes
 
     // Function to toggle timer start/stop
-    const restart = () => {
+    const toggleTimer = () => {
         setStart(prevStart => !prevStart); // Toggle 'start' state
     };
 
     return (
-        <section className="mt-5">
+        <section className="timer-container mt-5">
             <div className="d-flex justify-content-between">
                 {/* Displaying the timer */}
-                <h3 className="mx-auto">{hours < 10 ? "0" + hours : hours}:{minutes < 10 ? "0" + minutes : minutes}:{seconds < 10 ? "0" + seconds : seconds}</h3>
+                <h3 className="timer-display mx-auto">{hours < 10 ? "0" + hours : hours}:{minutes < 10 ? "0" + minutes : minutes}:{seconds < 10 ? "0" + seconds : seconds}</h3>
             </div>
-            <div className="text-light row mx-auto">
+            <div className="timer-controls text-light row mx-auto">
                 {/* Buttons for editing and deleting todo */}
-                <span className="text-end"><BsFillPencilFill onClick={updateTodo} /></span> 
-                <span className="text-end"><BsFillTrashFill onClick={deleteTodo} /></span>
-                
+                <button className="timer-edit-btn" aria-label="Edit" onClick={updateTodo}><BsFillPencilFill /></button>
+                <button className="timer-delete-btn" aria-label="Delete" onClick={deleteTodo}><BsFillTrashFill /></button>
             </div>
             {/* Button to start/stop the timer */}
-            <button className={`restart btn ${start ? "btn-primary" : "btn-success"}`} onClick={restart}>
+            <button className={`timer-toggle-btn btn ${start ? "btn-primary" : "btn-success"}`} onClick={toggleTimer}>
                 {start ? "Stop" : "Start"}
             </button>
         </section>
