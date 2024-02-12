@@ -6,9 +6,6 @@ Brief description of your project.
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Creating](#Creating a Countdown Project)
-- [Modifying](#Modifying a Countdown Project)
-- [Deleting](#Deleting a Countdown Project)
 - [Contributing](#contributing)
 
 ## Installation
